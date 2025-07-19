@@ -47,7 +47,7 @@ resource "aws_route_table" "public" {
 
 # Route Table Association
 resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+  subnet_id      = aws_subnet.public_a.id
   route_table_id = aws_route_table.public.id
 }
 
@@ -81,7 +81,7 @@ resource "aws_security_group" "web_sg" {
 resource "aws_instance" "web" {
   ami                         = "ami-0c94855ba95c71c99"
   instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.public.id
+  subnet_id                   = aws_subnet.public_a.id
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = true
 
@@ -106,7 +106,7 @@ resource "aws_db_instance" "rds" {
   engine                 = "mysql"
   engine_version         = "8.0"
   instance_class         = "db.t3.micro"
-  db_name                = "appdb" 
+  db_name                = "appdb"
   username               = "admin"
   password               = "password123"
   skip_final_snapshot    = true
