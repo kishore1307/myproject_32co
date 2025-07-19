@@ -25,6 +25,17 @@ resource "aws_subnet" "public" {
     Name = "public-subnet"
   }
 }
+resource "aws_subnet" "public_b" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "us-east-1b" # Different AZ
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet-b"
+  }
+}
+
 
 resource "aws_security_group" "web_sg" {
   name        = "web-sg"
