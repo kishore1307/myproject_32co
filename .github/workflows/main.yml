@@ -9,10 +9,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      id-token: write  # Required for OIDC if you're using it (optional)
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,7 +23,7 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push Docker image to ECR
+      - name: Build and Push Docker Image
         env:
           ECR_REGISTRY: 654654162109.dkr.ecr.us-east-1.amazonaws.com
           ECR_REPOSITORY: app
@@ -35,3 +31,17 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
+        run: cd infra && terraform init
+
+      - name: Terraform Plan
+        run: cd infra && terraform plan
+
+      - name: Terraform Apply
+        run: cd infra && terraform apply -auto-approve
