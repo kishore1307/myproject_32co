@@ -25,14 +25,14 @@ This solution implements:
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd devops-assessment
+   git clone [<your-repo-url>](https://github.com/kishore1307/myproject_32co.git)
+   cd 
    ```
 
 2. **Configure variables**
    ```bash
    # Update terraform/terraform.tfvars
-   alert_email = "your-email@example.com"
+   alert_email = "pkishore9391@gmail.com"
    aws_region  = "us-east-1"
    ```
 
