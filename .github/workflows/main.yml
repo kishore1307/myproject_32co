@@ -1,9 +1,20 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write  # Required for OIDC if you're using it (optional)
+    
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
@@ -13,13 +24,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Log in to Amazon ECR
-        run: |
-          aws ecr get-login-password --region us-east-1 | \
-          docker login --username AWS --password-stdin 654654162109.dkr.ecr.us-east-1.amazonaws.com
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build & Push Docker image
+      - name: Build, tag, and push Docker image to ECR
+        env:
+          ECR_REGISTRY: 654654162109.dkr.ecr.us-east-1.amazonaws.com
+          ECR_REPOSITORY: app
+          IMAGE_TAG: latest
         run: |
-          docker build -t app .
-          docker tag app:latest 654654162109.dkr.ecr.us-east-1.amazonaws.com/app:latest
-          docker push 654654162109.dkr.ecr.us-east-1.amazonaws.com/app:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
