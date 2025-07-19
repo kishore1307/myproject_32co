@@ -1,7 +1,7 @@
 import pytest
-import json
-from unittest.mock import patch, MagicMock
-from app import app, get_secret, get_db_connection
+from app.main import app
+from app.secrets import get_secret
+from app.db import get_db_connection
 
 @pytest.fixture
 def client():
