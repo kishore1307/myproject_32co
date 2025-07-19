@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Assessment App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DevOps Assessment Application</h1>
+        <p>This is a simple web application demonstrating:</p>
+        <ul>
+            <li>Infrastructure as Code deployment</li>
+            <li>Secure secrets management</li>
+            <li>Database connectivity</li>
+            <li>Health monitoring</li>
+            <li>Auto-scaling capabilities</li>
+        </ul>
+        
+        <button class="btn" onclick="checkHealth()">Check Health</button>
+        <button class="btn" onclick="fetchData()">Fetch Data</button>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                displayResult('Health Check', data);
+            } catch (error) {
+                displayResult('Health Check Error', {error: error.message});
+            }
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/data');
+                const data = await response.json();
+                displayResult('Data Fetch', data);
+            } catch (error) {
+                displayResult('Data Fetch Error', {error: error.message});
+            }
+        }
+
+        function displayResult(title, data) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<h3>${title}</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
