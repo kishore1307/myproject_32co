@@ -1,4 +1,4 @@
-# CloudWatch Log Group
+ CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "app_logs" {
   name              = "/aws/ec2/${var.project_name}"
   retention_in_days = 14
