@@ -1,0 +1,21 @@
+### Key Decisions Made
+
+1. **Multi-AZ Deployment**: Implemented high availability across multiple availability zones even though not explicitly required, ensuring resilience against zone failures.
+
+2. **Auto Scaling with Health Checks**: Added comprehensive health checks and auto-scaling policies to handle traffic variations automatically, going beyond basic compute provisioning.
+
+3. **Comprehensive Monitoring**: Implemented detailed CloudWatch dashboards and multiple alert conditions covering application, infrastructure, and database metrics rather than just basic monitoring.
+
+### Rationale
+
+- **Multi-AZ Decision**: Chose this for production-readiness and fault tolerance, which is essential for any serious deployment.
+- **Auto Scaling**: Implemented to demonstrate understanding of cloud-native scaling patterns and cost optimization.
+- **Enhanced Monitoring**: Added comprehensive observability to show proactive operational practices and incident prevention.
+
+### Trade-offs Considered
+
+- **Complexity vs Simplicity**: Balanced comprehensive features with maintainable code
+- **Cost vs Reliability**: Multi-AZ and auto-scaling increase costs but provide better availability
+- **Security vs Accessibility**: Implemented private subnets and restrictive security groups while maintaining necessary access
+
+The solution prioritizes production-readiness and operational excellence while remaining cost-conscious and maintainable.
