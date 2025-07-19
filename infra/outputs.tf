@@ -11,5 +11,5 @@ output "s3_bucket_name" {
 }
 
 output "public_subnet_id" {
-  value = aws_subnet.public.id
+  value = aws_subnet.public_a.id
 }
