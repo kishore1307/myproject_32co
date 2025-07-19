@@ -1,41 +1,31 @@
-name: Node.js CI/CD
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
-    - name: Install deps
-      run: npm install
-      working-directory: ./app
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654654162109.dkr.ecr.us-east-1.amazonaws.com
 
-    - name: Run tests
-      run: npm test || echo "Skipping tests"
-      working-directory: ./app
+      - name: Build & Push Docker image
+        run: |
+          docker build -t app .
+          docker tag app:latest 654654162109.dkr.ecr.us-east-1.amazonaws.com/app:latest
+          docker push 654654162109.dkr.ecr.us-east-1.amazonaws.com/app:latest
 
-    - name: Build Docker image
-      run: docker build -t my-app .
-      working-directory: ./app
-
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.HOST }}
-        username: ec2-user
-        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        script: |
-          docker rm -f my-app || true
-          docker pull my-app || true
-          docker run -d -p 80:3000 --name my-app my-app
+      - name: Terraform Apply
+        run: |
+          cd infra
+          terraform init
+          terraform apply -auto-approve
