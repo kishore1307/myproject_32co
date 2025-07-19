@@ -1,0 +1,44 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/EC2", "CPUUtilization", "AutoScalingGroupName", "devops-assessment-asg" ],
+          [ "AWS/ApplicationELB", "RequestCount", "LoadBalancer", "app/devops-assessment-alb/1234567890123456" ],
+          [ "AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", "app/devops-assessment-alb/1234567890123456" ],
+          [ "AWS/ApplicationELB", "HealthyHostCount", "TargetGroup", "targetgroup/devops-assessment-tg/1234567890123456" ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Application Performance Metrics",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", "devops-assessment-db" ],
+          [ ".", "DatabaseConnections", ".", "." ],
+          [ ".", "ReadLatency", ".", "." ],
+          [ ".", "WriteLatency", ".", "." ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Database Metrics",
+        "period": 300
+      }
+    }
+  ]
+}
